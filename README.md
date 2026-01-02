@@ -7,7 +7,7 @@ Image-based VM lab infrastructure using QEMU/libvirt and OpenTofu.
 ```
     - [x] alpine-base.qcow2 (minimal Alpine)
                         ↓
-    - [ ] common.qcow2 (ssh, curl, git, qemu-guest-agent, k3s)
+    - [x] common.qcow2 — immutable software layer shared by all Alpine lab nodes
                         ↓
               ┌────────────────────┴────────────────────┐
               ↓                                         ↓
@@ -30,14 +30,16 @@ infra-labs/
 │       ├── worker/
 │       └── *.tf
 ├── scripts/
-│   └── install-base.sh
+│   ├── install-base.sh
+│   └── install-common.sh
 └── Makefile
 ```
 
 ## Usage
 
 1. Build base image: `make base`
-2. Deploy VMs: `tofu -chdir=lab/alpine-k3s apply`
+2. Build common image: `make common`
+3. Deploy VMs: `tofu -chdir=lab/alpine-k3s apply`
 
 ## TODO
 
