@@ -1,7 +1,2 @@
-# Generated VM images
-/images/**/*.qcow2
-/images/**/*.qcow2.tmp
-
-# Downloaded installer media
-/images/**/*.iso
-/images/**/*.iso.sha256
+# Packer build artifacts (images, installer media)
+/images/

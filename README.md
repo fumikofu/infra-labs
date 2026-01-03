@@ -4,46 +4,26 @@ Image-based VM lab infrastructure using QEMU/libvirt and OpenTofu.
 
 ## Architecture
 
-```
-    - [x] alpine-base.qcow2 (minimal Alpine)
-                        ↓
-    - [x] common.qcow2 — immutable software layer shared by all Alpine lab nodes
-                        ↓
-              ┌────────────────────┴────────────────────┐
-              ↓                                         ↓
-    - [ ] control.qcow2 (k3s cp)            - [ ] worker.qcow2 (k3s wp)
-              ↓                                         ↓
-    - [ ] disposable VM overlays
-```
+```mermaid
+flowchart TB
+    A["packer build base.pkr.hcl<br/>(creates alpine-base-3.24.1.qcow2, minimal Alpine installation)"]
+    B["?<br/>(alpine-common.qcow2, shared software layer)"]
 
-## Structure
+    C["?<br/>(control.qcow2, k3s control plane layer)"]
+    D["?<br/>(worker.qcow2, k3s worker layer)"]
 
+    E["?<br/>(disposable VM overlays + cluster)"]
+
+    A --> B
+    B --> C
+    B --> D
+    C --> E
+    D --> E
 ```
-infra-labs/
-├── images/
-│   └── alpine/
-│       ├── base/
-│       └── common/
-├── lab/
-│   └── alpine-k3s/
-│       ├── control/
-│       ├── worker/
-│       └── *.tf
-├── scripts/
-│   ├── install-base.sh
-│   └── install-common.sh
-└── Makefile
-```
-
-## Usage
-
-1. Build base image: `make base`
-2. Build common image: `make common`
-3. Deploy VMs: `tofu -chdir=lab/alpine-k3s apply`
 
 ## TODO
 
-- [ ] Introduce Packer
 - [ ] Introduce Debian with k8s
+- [ ] Utilize HCL: SSH keys, variables, etc.
 - [ ] Add GPG verification
-- [ ] Centralize QEMU vars (RAM, CPUs, disk, NIC) shared by install-*.sh and Terraform
+- [ ] Centralize QEMU vars (RAM, CPUs, disk, NIC) shared by Packer and Terraform

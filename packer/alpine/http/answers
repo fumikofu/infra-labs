@@ -1,0 +1,17 @@
+KEYMAPOPTS="us us"
+HOSTNAMEOPTS="-n alpine"
+
+INTERFACESOPTS="auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+"
+
+PROXYOPTS="none"
+APKREPOSOPTS="-1 -c"
+SSHDOPTS="-c openssh"
+USEROPTS="none"
+NTPOPTS="none"
+TIMEZONEOPTS="-z UTC"
+DISKOPTS="-m sys -s 0 /dev/vda"
